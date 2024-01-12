@@ -235,6 +235,23 @@ static Boolean EPS_TelemetryHKGeneral(void)
 	return TRUE;
 }
 
+static Boolean PrintBatteryStatus()
+{
+	gom_eps_hk_t batteryStatus;
+	print_error(GomEpsGetHkData_general(0,&batteryStatus));
+	if(8>batteryStatus.fields.vbatt*1000 && batteryStatus.fields.vbatt*1000>7)
+		printf("battery mood is great\r\n");
+	else if(7>=batteryStatus.fields.vbatt*1000 && batteryStatus.fields.vbatt*1000>6)
+		printf("battery mood is safe\r\n");
+    else if(6>=batteryStatus.fields.vbatt*1000 && batteryStatus.fields.vbatt*1000>5)
+		printf("battery mood is critical\r\n");
+    else if((5>=batteryStatus.fields.vbatt*1000) && (batteryStatus.fields.vbatt*1000>4))
+    		printf("battery mood is bad\r\n");
+
+	return TRUE;
+
+}
+
 static Boolean EPS_TelemetryHKParam(void)
 {
 	gom_eps_hkparam_t myEpsTelemetry_param;
@@ -388,8 +405,9 @@ static Boolean selectAndExecuteGomEPSDemoTest(void)
 	printf("\t 8) EPS Enable channel \n\r");
 	printf("\t 9) EPS Disable channel \n\r");
 	printf("\t 10) EPS Reboot \n\r");
+	printf("\t 11) PrintBatteryStatus \n\r");
 
-	while(UTIL_DbguGetIntegerMinMax(&selection, 0, 10) == 0);
+	while(UTIL_DbguGetIntegerMinMax(&selection, 0, 11) == 0);
 
 	switch(selection) {
 	case 0:
@@ -424,6 +442,9 @@ static Boolean selectAndExecuteGomEPSDemoTest(void)
         break;
     case 10:
     	offerMoreTests = EPS_Reboot();
+    	break;
+    case 11:
+    	offerMoreTests = PrintBatteryStatus();
     	break;
 	default:
 		break;
