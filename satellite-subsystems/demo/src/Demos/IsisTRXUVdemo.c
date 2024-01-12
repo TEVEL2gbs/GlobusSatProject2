@@ -24,6 +24,8 @@
 #include <hal/boolean.h>
 
 #include <satellite-subsystems/IsisTRXUV.h>
+#include <satellite-subsystems/GomEPS.h>
+
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -299,6 +301,12 @@ static Boolean imc_getAllTelemTest(void)
 	return TRUE;
 }
 
+static Boolean Beacon()
+{
+	printf(EPS_TelemetryHKGeneral());
+
+}
+
 static Boolean selectAndExecuteTRXUVDemoTest(void)
 {
 	int selection = 0;
@@ -315,7 +323,8 @@ static Boolean selectAndExecuteTRXUVDemoTest(void)
 	printf("\t 8) Get command frame and retransmit \n\r");
 	printf("\t 9) Get all telemetry \n\r");
 	printf("\t 10) Reset TRXUV both microcontrollers \n\r");
-	printf("\t 11) Return to main menu \n\r");
+	printf("\t 11) Beacon \n\r");
+	printf("\t 12) Return to main menu \n\r");
 
 	while(UTIL_DbguGetIntegerMinMax(&selection, 1, 11) == 0);
 
@@ -351,6 +360,9 @@ static Boolean selectAndExecuteTRXUVDemoTest(void)
 		offerMoreTests = resetUVTest();
 		break;
 	case 11:
+		offerMoreTests = Beacon();
+		break;
+	case 12:
 		offerMoreTests = FALSE;
 		break;
 
