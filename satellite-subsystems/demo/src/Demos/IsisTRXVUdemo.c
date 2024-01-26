@@ -616,6 +616,7 @@ static Boolean selectAndExecuteTRXVUDemoTest(void)
 		break;
 	case 16:
 		offerMoreTests= TurnOnTransporter();
+
 		break;
 	case 17:
 		offerMoreTests=TurnOffTranspoter();
