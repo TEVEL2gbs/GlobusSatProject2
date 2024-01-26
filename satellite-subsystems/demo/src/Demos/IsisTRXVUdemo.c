@@ -56,6 +56,32 @@ static Boolean softResetVUTest(void)
 	return TRUE;
 }
 
+static Boolean TurnOnTransporter(void){
+
+	unsigned char arr[2]={0x38,2};
+	int x=I2C_write(0x61,arr,2);
+	if(x==0)
+		printf("\r\n very good bro \r\n");
+	else
+		printf("\r\n not good my brother \r\n");
+
+
+	return TRUE;
+}
+static Boolean TurnOffTranspoter(void){
+
+	unsigned char arr[2]={0x38,1};
+		int x=I2C_write(0x61,arr,2);
+		if(x==0)
+			printf("\r\n very good bro \r\n");
+		else
+			printf("\r\n not good my brother \r\n");
+
+
+		return TRUE;
+	return TRUE;
+}
+
 static Boolean hardResetVUTest(void)
 {
 	printf("\r\n Hard Reset of both receiver and transmitter microcontrollers \r\n");
@@ -506,6 +532,7 @@ static Boolean vutc_getTxTelemTest_revD(void)
 	return TRUE;
 }
 
+
 static Boolean selectAndExecuteTRXVUDemoTest(void)
 {
 	int selection = 0;
@@ -526,9 +553,12 @@ static Boolean selectAndExecuteTRXVUDemoTest(void)
 	printf("\t 12) (revD) Get command frame by interrupt \n\r");
 	printf("\t 13) (revD) Get receiver telemetry \n\r");
 	printf("\t 14) (revD) Get transmitter telemetry \n\r");
-	printf("\t 15) Return to main menu \n\r");
+	printf("\t 15) Turn on transporter \n\r");
+	printf("\t 16) Turn off transporter \n\r");
+	printf("\t 17) Return to main menu \n\r");
 
-	while(UTIL_DbguGetIntegerMinMax(&selection, 1, 15) == 0);
+
+	while(UTIL_DbguGetIntegerMinMax(&selection, 1, 17) == 0);
 
 	switch(selection) {
 	case 1:
@@ -574,6 +604,12 @@ static Boolean selectAndExecuteTRXVUDemoTest(void)
 		offerMoreTests = vutc_getTxTelemTest_revD();
 		break;
 	case 15:
+		offerMoreTests= TurnOnTransporter();
+		break;
+	case 16:
+		offerMoreTests=TurnOffTranspoter();
+		break;
+    case 17:
 		offerMoreTests = FALSE;
 		break;
 
