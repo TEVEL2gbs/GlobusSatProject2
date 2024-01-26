@@ -173,6 +173,13 @@ static Boolean vutc_sendUserValueClSignTest(void)
 }
 
 
+static Boolean check_beacon(void) {
+	unsigned char data[] = "Hello, we are from Givat Shmuel";
+	unsigned char length = sizeof(data);
+	print_error(IsisTrxvu_tcSetAx25BeaconDefClSign(0, data, length, 20));
+	return TRUE;
+}
+
 static Boolean vutc_toggleIdleStateTest(void)
 {
 	static Boolean toggle_flag = 0;
@@ -517,18 +524,19 @@ static Boolean selectAndExecuteTRXVUDemoTest(void)
 	printf("\t 3) Default Callsign Send Test\n\r");
 	printf("\t 4) Chosen number Callsign Send Test\n\r");
 	printf("\t 5) Chosen data Callsign Send Test\n\r");
-	printf("\t 6) Toggle Idle state \n\r");
-	printf("\t 7) Change transmission bitrate to 9600  \n\r");
-	printf("\t 8) Change transmission bitrate to 1200 \n\r");
-	printf("\t 9) Get frame count \n\r");
-	printf("\t 10) Get command frame \n\r");
-	printf("\t 11) Get command frame and retransmit \n\r");
-	printf("\t 12) (revD) Get command frame by interrupt \n\r");
-	printf("\t 13) (revD) Get receiver telemetry \n\r");
-	printf("\t 14) (revD) Get transmitter telemetry \n\r");
-	printf("\t 15) Return to main menu \n\r");
+	printf("\t 6) Check Beacon\n\r");
+	printf("\t 7) Toggle Idle state \n\r");
+	printf("\t 8) Change transmission bitrate to 9600  \n\r");
+	printf("\t 9) Change transmission bitrate to 1200 \n\r");
+	printf("\t 10) Get frame count \n\r");
+	printf("\t 11) Get command frame \n\r");
+	printf("\t 12) Get command frame and retransmit \n\r");
+	printf("\t 13) (revD) Get command frame by interrupt \n\r");
+	printf("\t 14) (revD) Get receiver telemetry \n\r");
+	printf("\t 15) (revD) Get transmitter telemetry \n\r");
+	printf("\t 16) Return to main menu \n\r");
 
-	while(UTIL_DbguGetIntegerMinMax(&selection, 1, 15) == 0);
+	while(UTIL_DbguGetIntegerMinMax(&selection, 1, 16) == 0);
 
 	switch(selection) {
 	case 1:
@@ -547,33 +555,36 @@ static Boolean selectAndExecuteTRXVUDemoTest(void)
 		offerMoreTests = vutc_sendUserValueClSignTest();
 		break;
 	case 6:
-		offerMoreTests = vutc_toggleIdleStateTest();
+		offerMoreTests = check_beacon();
 		break;
 	case 7:
-		offerMoreTests = vutc_setTxBitrate9600Test();
+		offerMoreTests = vutc_toggleIdleStateTest();
 		break;
 	case 8:
-		offerMoreTests = vutc_setTxBitrate1200Test();
+		offerMoreTests = vutc_setTxBitrate9600Test();
 		break;
 	case 9:
-		offerMoreTests = vurc_getFrameCountTest();
+		offerMoreTests = vutc_setTxBitrate1200Test();
 		break;
 	case 10:
-		offerMoreTests = vurc_getFrameCmdTest();
+		offerMoreTests = vurc_getFrameCountTest();
 		break;
 	case 11:
+		offerMoreTests = vurc_getFrameCmdTest();
+		break;
+	case 12:
 		offerMoreTests = vurc_getFrameCmdAndTxTest();
 		break;
-    case 12:
+    case 13:
         offerMoreTests = vurc_getFrameCmdInterruptTest();
         break;
-	case 13:
+	case 14:
 		offerMoreTests = vurc_getRxTelemTest_revD();
 		break;
-	case 14:
+	case 15:
 		offerMoreTests = vutc_getTxTelemTest_revD();
 		break;
-	case 15:
+	case 16:
 		offerMoreTests = FALSE;
 		break;
 
